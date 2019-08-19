@@ -54,4 +54,4 @@ blocks:
             # Persist downloaded packages for future jobs.
             - cache store
             # check conda version
-            - conda list
+            - conda list anaconda$

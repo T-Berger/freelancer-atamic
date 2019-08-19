@@ -36,8 +36,7 @@ blocks:
           # Install Linux dependencies.
           - sudo apt-get update && sudo apt-get install -y python3-dev
           # Install Anaconda
-          - cd /tmp
-          - curl -O https://repo.anaconda.com/archive/Anaconda3-2019.03-Linux-x86_64.sh
+          - cd /tmp && curl -O https://repo.anaconda.com/archive/Anaconda3-2019.03-Linux-x86_64.sh && bash Anaconda3-2019.03-Linux-x86_64.sh
       jobs:
         - name: pip
           commands:

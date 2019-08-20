@@ -1,0 +1,13 @@
+name: atamic
+dependencies:
+  - argparse
+  - pyyaml
+  - slackclient
+  - pytest
+  - nbval
+  - numpy
+  - pandas
+  - matplotlib
+  - statsmodels
+  - patsy
+  - jupyter

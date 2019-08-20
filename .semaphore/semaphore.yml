@@ -55,5 +55,9 @@ blocks:
             - pip download --cache-dir .pip_cache -r requirements.txt
             # Persist downloaded packages for future jobs.
             - cache store
-            # check conda version
+            # check conda version installed
             - conda list anaconda$
+            # where am i?
+            - pwd
+            # create a conda envirotment from envirotment.yml
+            # - conda activate atamic

@@ -29,7 +29,7 @@ blocks:
       secrets:
         - name: slack-secrets
       jobs:
-        - name: "Conda Environment"
+        - name: "Jupyter NotBooks Tester Job"
           commands:
             # Get the latest version of our source code from GitHub:
             # See https://docs.semaphoreci.com/article/54-toolbox-reference#checkout

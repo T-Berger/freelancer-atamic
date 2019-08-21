@@ -1,13 +1,14 @@
 name: atamic
 dependencies:
-  - argparse
   - pyyaml
-  - slackclient
   - pytest
-  - nbval
   - numpy
   - pandas
   - matplotlib
   - statsmodels
   - patsy
   - jupyter
+  - pip:
+    - argparse
+    - nbval
+    - slackclient

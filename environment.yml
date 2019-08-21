@@ -1,5 +1,6 @@
 name: atamic
 dependencies:
+  - nbformat
   - pyyaml
   - pytest
   - numpy
@@ -10,6 +11,5 @@ dependencies:
   - jupyter
   - pip:
     - argparse
-    - nbformat
     - nbval
     - slackclient

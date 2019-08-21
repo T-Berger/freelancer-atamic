@@ -44,6 +44,8 @@ blocks:
             - conda list numpy
             # Debug: checkout the nbformat version installed in the conda environment
             - conda list nbformat
+            # Debug: slackclient the nbformat version installed in the conda environment
+            - conda list slackclient
             # Start the Python Jupyter Notebooks service using the configuration.yml. Generate
             # notifications where finished
-            - python3 notebook_tester.py
+            - python notebook_tester.py

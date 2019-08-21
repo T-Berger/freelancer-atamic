@@ -24,10 +24,10 @@ agent:
 # commands to execute.
 # See https://docs.semaphoreci.com/article/62-concepts
 blocks:
-  - name: "Create Envirotment"
+  - name: "Create Environment"
     task:
       jobs:
-        - name: "Conda Envirotment"
+        - name: "Conda Environment"
           commands:
             # Get the latest version of our source code from GitHub:
             # See https://docs.semaphoreci.com/article/54-toolbox-reference#checkout
@@ -53,6 +53,8 @@ blocks:
             - checkout
             # Debug: checkout the nbformat version installed in the conda environment
             - conda list nbformat
+            - pip show nbformat
+            - pip3 show nbformat
             # Start the Python Jupyter Notebooks service using the configuration.yml. Generate
             # notifications where finished
             - python3 notebook_tester.py

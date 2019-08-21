@@ -29,7 +29,7 @@ blocks:
       jobs:
         - name: "Conda Environment"
           commands:
-            # Get the latest version of our source code from GitHub:
+            # Get the latest version of our source code from GitHub: 
             # See https://docs.semaphoreci.com/article/54-toolbox-reference#checkout
             - checkout
             # Debug: checkout the conda version installed

@@ -1,5 +1,6 @@
 name: atamic
 dependencies:
+  - nbformat
   - pyyaml
   - pytest
   - numpy

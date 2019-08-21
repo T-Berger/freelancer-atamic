@@ -32,9 +32,15 @@ blocks:
             # Get the latest version of our source code from GitHub:
             # See https://docs.semaphoreci.com/article/54-toolbox-reference#checkout
             - checkout
-            # check conda version installed
+            # Check conda version installed
             - conda list
-            # where am i?
+            # Where am i?
             - pwd
-            # create a conda envirotment from envirotment.yml
-            # - conda activate atamic
+            # Create the environment from the environment.yml file
+            - conda env create -f environment.yml
+            # Activate the new environment
+            - conda activate atamic
+            # Verify that the new environment was installed correctly
+            - conda list
+            # List a package installed in the environment. For example numpy
+            - conda list numpy

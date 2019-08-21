@@ -26,10 +26,12 @@ agent:
 blocks:
   - name: "Create Environment"
     task:
+      secrets:
+        - name: slack-secrets
       jobs:
         - name: "Conda Environment"
           commands:
-            # Get the latest version of our source code from GitHub: 
+            # Get the latest version of our source code from GitHub:
             # See https://docs.semaphoreci.com/article/54-toolbox-reference#checkout
             - checkout
             # Debug: checkout the conda version installed
@@ -47,5 +49,5 @@ blocks:
             # Debug: slackclient the nbformat version installed in the conda environment
             - conda list slackclient
             # Start the Python Jupyter Notebooks service using the configuration.yml. Generate
-            # notifications where finished
-            - python notebook_tester.py
+            # notifications where finished. Recover the Slack API Token from secrets
+            - python notebook_tester.py -t $SLACK_API_TOKEN

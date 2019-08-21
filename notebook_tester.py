@@ -1,8 +1,9 @@
 import os
 import io
-import nbformat
 import yaml
 import json
+import argparse
+import nbformat
 
 from glob import glob
 from nbconvert.preprocessors import ExecutePreprocessor
@@ -45,7 +46,7 @@ def test_notebooks():
 
     return nb, errors
 
-if __name__ == '__main__':
+if __name__ == '__main__':    
     # get FOLDERS from yaml file
     print('Get folders from configuration ...')
     with open("configuration.yml", 'r') as ymlfile:
@@ -56,10 +57,13 @@ if __name__ == '__main__':
     print()
     print('Configuration slack connection ...')
     
-    # export SLACK_API_TOKEN = <SLACK_API_TOKEN> to test local
-    # SLACK_API_TOKEN = os.environ['SLACK_API_TOKEN']
-    SLACK_API_TOKEN = 'xoxp-457187383046-457187383142-733646445408-22c47b0c9a6f5638f0b48cd148394c62'
+    # get sclack API Token        
+    parser = argparse.ArgumentParser(description='Notebook Jupyter Tester', epilog='Example of use: python3 notebook_tester.py -t <SLACK_API_TOKEN>')    
+    parser.add_argument('-t', '--token', type=str, help='Slack API Token to notifie')
 
+    args = parser.parse_args()
+    SLACK_API_TOKEN = args.token
+    
     client = SlackClient(SLACK_API_TOKEN)
 
     print()

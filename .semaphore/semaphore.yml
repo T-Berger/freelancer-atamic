@@ -24,30 +24,28 @@ agent:
 # commands to execute.
 # See https://docs.semaphoreci.com/article/62-concepts
 blocks:
-  - name: "Create Environment"
+  - name: "Create Block"
     task:
       secrets:
         - name: slack-secrets
       jobs:
-        - name: "Jupyter NotBooks Tester Job"
+        - name: "Jupyter Notebooks Tester Job"
           commands:
             # Get the latest version of our source code from GitHub:
             # See https://docs.semaphoreci.com/article/54-toolbox-reference#checkout
             - checkout
             # Debug: checkout the conda version installed
-            - conda list
+            #- conda list
             # Debug: Where am i?
-            - pwd
+            #- pwd
             # Create the conda environment from the environment.yml file: conda and pip python dependencies
             - conda env create -f environment.yml
             # Activate the new conda environment
             - conda activate atamic
-            # Debug: checkout the numpy version installed in the conda environment
-            - conda list numpy
             # Debug: checkout the nbformat version installed in the conda environment
-            - conda list nbformat
+            #- conda list nbformat
             # Debug: slackclient the nbformat version installed in the conda environment
-            - conda list slackclient
+            #- conda list slackclient
             # Start the Python Jupyter Notebooks service using the configuration.yml. Generate
             # notifications where finished. Recover the Slack API Token from secrets
             - python notebook_tester.py -t $SLACK_API_TOKEN

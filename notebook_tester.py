@@ -47,7 +47,7 @@ def test_notebooks():
 
 if __name__ == '__main__':
     # get FOLDERS from yaml file
-    print('Get folder from configuration ...')
+    print('Get folders from configuration ...')
     with open("configuration.yml", 'r') as ymlfile:
         cfg = yaml.load(ymlfile)
     
@@ -58,7 +58,7 @@ if __name__ == '__main__':
     
     # export SLACK_API_TOKEN = <SLACK_API_TOKEN> to test local
     # SLACK_API_TOKEN = os.environ['SLACK_API_TOKEN']
-    SLACK_API_TOKEN = 'xoxp-457187383046-457187383142-731917324852-3fc3f7792b1e4631dcf5a0f7b092b277'
+    SLACK_API_TOKEN = 'xoxp-457187383046-457187383142-722190427875-00bc46a9a64f6492462d0ec67a394337'
 
     client = SlackClient(SLACK_API_TOKEN)
 
@@ -94,4 +94,5 @@ if __name__ == '__main__':
     if response['ok'] == True:                                   
         print('Message sent')
     else:
+        print('Error sending messages')
         print(response)    

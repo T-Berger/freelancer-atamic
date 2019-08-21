@@ -23,7 +23,9 @@ def test_notebooks():
         print()
         print('Parsing files from ' + FOLDERS[i] + ' with ' + str(len(files)) + ' files')
         print('+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-')
+        
         errors = []
+        nb = None
         i = 1       
         for file in files:
             print(str(i) + ' - Testing notebook ' + file)
@@ -37,7 +39,7 @@ def test_notebooks():
                     if 'outputs' in cell:
                         for output in cell['outputs']:
                             if output.output_type == 'error':
-                                errors.append({'notebook': file, 'trace': output})
+                                errors.append({'notebook': file, 'cell': cell.execution_count, 'trace': output})
                                 
             i = i + 1
 
@@ -54,7 +56,9 @@ if __name__ == '__main__':
     print()
     print('Configuration slack connection ...')
     
-    SLACK_API_TOKEN = os.environ['SLACK_API_TOKEN']
+    # export SLACK_API_TOKEN = <SLACK_API_TOKEN> to test local
+    # SLACK_API_TOKEN = os.environ['SLACK_API_TOKEN']
+    SLACK_API_TOKEN = 'xoxp-457187383046-457187383142-731917324852-3fc3f7792b1e4631dcf5a0f7b092b277'
 
     client = SlackClient(SLACK_API_TOKEN)
 
@@ -67,14 +71,13 @@ if __name__ == '__main__':
     # testing notebooks
     nb, errors = test_notebooks()
         
-    print('Exist this errors ...')
-    
-    #print(errors)
-    #for error in errors:
-    #    print()
-    #    print('Notebook: ' + error['notebook'])       
-    #    print(error['trace'])   
-    
+    if len(errors) > 0:
+        initial_comment = 'Testing Atamic at ' + datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ' with errors'
+        print('Exist some errors ...')
+    else:
+        initial_comment = 'Testing Atamic at ' + datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ' with any error'
+        print('Not Exist any errors ...')
+        
     logname = 'atamic_' + datetime.now().strftime("%Y%m%d-%H%M%S") + '.log'
     log = json.dumps(errors, indent=4)
     
@@ -84,8 +87,8 @@ if __name__ == '__main__':
     response = client.api_call('files.upload',
                                 channels='#test',
                                 filename=logname,
-                                title='Testing Atamic!',
-                                initial_comment='Testing Atamic!',
+                                title='Testing Atamic at ' + datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                initial_comment=initial_comment,
                                 file=bIO)
                      
     if response['ok'] == True:                                   

@@ -32,15 +32,25 @@ blocks:
             # Get the latest version of our source code from GitHub:
             # See https://docs.semaphoreci.com/article/54-toolbox-reference#checkout
             - checkout
-            # Check conda version installed
+            # Debug: checkout the conda version installed
             - conda list
-            # Where am i?
+            # Debug: Where am i?
             - pwd
-            # Create the environment from the environment.yml file
+            # Create the conda environment from the environment.yml file: conda and pip python dependencies
             - conda env create -f environment.yml
-            # Activate the new environment
+            # Activate the new conda environment
             - conda activate atamic
-            # Verify that the new environment was installed correctly
-            - conda list
-            # List a package installed in the environment. For example numpy
+            # Debug: checkout the numpy version installed in the conda environment
             - conda list numpy
+
+  - name: "Testing Notebooks"
+    task:
+      jobs:
+        - name: "Python Tester Service"
+          commands:
+            # Get the latest version of our source code from GitHub:
+            # See https://docs.semaphoreci.com/article/54-toolbox-reference#checkout
+            - checkout
+            # Start the Python Jupyter Notebooks service using the configuration.yml. Generate
+            # notifications where finished
+            - python3 notebook_tester.py

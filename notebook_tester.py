@@ -124,7 +124,7 @@ if __name__ == '__main__':
     client = SlackClient(SLACK_API_TOKEN)
 
     print('SMTP_HOST: ' + SMTP_HOST)
-    print('SMTP_PORT: ' + SMTP_PORT)
+    print('SMTP_PORT: ' + str(SMTP_PORT))
     print('EMAIL_SENDER: ' + EMAIL_SENDER)
     print('EMAIL_SENDER_USERNAME: ' + EMAIL_SENDER_USERNAME)
     print('EMAIL_SENDER_PASSWORD: ' + EMAIL_SENDER_PASSWORD)

@@ -107,6 +107,8 @@ if __name__ == '__main__':
     parser.add_argument('-t', '--token', type=str, help='Slack API Token to notifie')
     parser.add_argument('-u', '--username', type=str, help='Sender username email account')
     parser.add_argument('-p', '--password', type=str, help='Sender password email account')
+    parser.add_argument('-sh', '--host', type=str, default='smtp.gmail.com', help='SMTP host')
+    parser.add_argument('-sp', '--port', type=str, default=587, help='SMTP port')
 
     args = parser.parse_args()
     
@@ -114,8 +116,8 @@ if __name__ == '__main__':
     SLACK_API_TOKEN = args.token
     
     # email configuration for gmail
-    SMTP_HOST = "smtp.gmail.com"
-    SMTP_PORT = 587    
+    SMTP_HOST = args.host
+    SMTP_PORT = args.port
     EMAIL_SENDER_USERNAME = args.username
     EMAIL_SENDER_PASSWORD = args.password
     EMAIL_SENDER = cfg['email'][0]['sender']

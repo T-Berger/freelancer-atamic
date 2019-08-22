@@ -28,7 +28,7 @@ def test_notebooks():
         files = sorted([y for x in os.walk(FOLDERS[i]) for y in glob(os.path.join(x[0], '[!.]*.ipynb'))])
         
         print()
-        print('Parsing files from ' + FOLDERS[i] + ' with ' + str(len(files)) + ' files')
+        print('Parsing files from ' + FOLDERS[i] + ' with ' + str(len(files)) + ' files ')
         print('+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-')
         
         errors = []

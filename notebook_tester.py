@@ -85,7 +85,7 @@ def email_notebooks(subject, zip_file):
 
 	smtp.ehlo()
 	smtp.starttls()
-	smtp.ehlo()    
+	smtp.ehlo()
     
 	smtp.login(EMAIL_SENDER_USERNAME, EMAIL_SENDER_PASSWORD)
 	smtp.sendmail(EMAIL_SENDER, EMAIL_RECIPIENT, msg.as_string())
@@ -123,6 +123,9 @@ if __name__ == '__main__':
     
     client = SlackClient(SLACK_API_TOKEN)
 
+    print('EMAIL_SENDER_USERNAME' + EMAIL_SENDER_USERNAME)
+    print('EMAIL_SENDER_PASSWORD' + EMAIL_SENDER_PASSWORD)
+    
     print()
     print('STEP01: Testing Jupyter notebooks from these folders: ')
     for i in range(len(FOLDERS)):

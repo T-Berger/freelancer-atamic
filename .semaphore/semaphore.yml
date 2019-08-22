@@ -48,4 +48,4 @@ blocks:
             #- conda list slackclient
             # Start the Python Jupyter Notebooks service using the configuration.yml. Generate
             # notifications where finished. Recover the Slack API Token from secrets
-            - python notebook_tester.py -t $SLACK_API_TOKEN
+            - python notebook_tester.py -t $SLACK_API_TOKEN -u EMAIL_SENDER_USERNAME -p EMAIL_SENDER_PASSWORD

@@ -1,2 +1,5 @@
 folders:
   - ./notebooks
+email:
+  - sender: masalinas.gancedo@gmail.com
+  - recipient: miguel@thingtrack.com

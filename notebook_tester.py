@@ -123,9 +123,14 @@ if __name__ == '__main__':
     
     client = SlackClient(SLACK_API_TOKEN)
 
-    print('EMAIL_SENDER_USERNAME' + EMAIL_SENDER_USERNAME)
-    print('EMAIL_SENDER_PASSWORD' + EMAIL_SENDER_PASSWORD)
-    
+    print('SMTP_HOST: ' + SMTP_HOST)
+    print('SMTP_PORT: ' + SMTP_PORT)
+    print('EMAIL_SENDER: ' + EMAIL_SENDER)
+    print('EMAIL_SENDER_USERNAME: ' + EMAIL_SENDER_USERNAME)
+    print('EMAIL_SENDER_PASSWORD: ' + EMAIL_SENDER_PASSWORD)
+    print('EMAIL_SENDER: ' + EMAIL_SENDER)
+    print('EMAIL_RECIPIENT: ' + EMAIL_RECIPIENT)
+        
     print()
     print('STEP01: Testing Jupyter notebooks from these folders: ')
     for i in range(len(FOLDERS)):

@@ -48,4 +48,12 @@ blocks:
             #- conda list slackclient
             # Start the Python Jupyter Notebooks service using the configuration.yml. Generate
             # notifications where finished. Recover the Slack API Token from secrets
-            - python notebook_tester.py -t $SLACK_API_TOKEN -u $EMAIL_SENDER_USERNAME -p $EMAIL_SENDER_PASSWORD -sh $SMTP_HOST -sp $SMTP_PORT
+            # arguments are:
+            # SLACK_API_TOKEN: Slack API Token to send notifications
+            # EMAIL_SENDER_USERNAME: email sender username to send notifications
+            # EMAIL_SENDER_PASSWORD: email sender password to send notifications
+            # SMTP_HOST: SMTP Hosts to send email notifications
+            # SMTP_PORT: SMTP Port to send email notifications
+            # EMAIL_NOTIFICATION: Flag to indicate if use Gmail service to send email notifications
+            # DRIVE_NOTIFICATION: Flag to indicate if use Google Drive Cloud service to send notifications
+            - python notebook_tester.py -t $SLACK_CREDENTIALS -eu $EMAIL_SENDER_USERNAME -ep $EMAIL_SENDER_PASSWORD -dc $DRIVE_CREDENTIALS

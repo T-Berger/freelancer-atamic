@@ -16,6 +16,9 @@ from io import StringIO
 from email import encoders
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
+from apiclient import discovery
+from apiclient.http import MediaFileUpload
+from google.oauth2 import service_account
     
 def test_notebooks():
     # define process executor with timeout in seconds and python runtime
@@ -67,8 +70,8 @@ def zip_notebooks(folders, dst):
                     
                     zf.write(abs_name, arc_name)                								
                 
-    zf.close()    
-
+    zf.close()                
+    
 def email_notebooks(subject, zip_file):
 	msg = MIMEMultipart()
 	msg['Subject'] = subject
@@ -78,7 +81,7 @@ def email_notebooks(subject, zip_file):
 	part = MIMEBase("application", "octet-stream")
 	part.set_payload(open(zip_file, "rb").read())
 	encoders.encode_base64(part)
-	part.add_header("Content-Disposition", "attachment; filename=\"%s.zip\"" % (zip_file))
+	part.add_header("Content-Disposition", "attachment; filename=\"%s\"" % (zip_file))
 	msg.attach(part)	
     
 	smtp = smtplib.SMTP(SMTP_HOST, SMTP_PORT)
@@ -91,48 +94,131 @@ def email_notebooks(subject, zip_file):
 	smtp.sendmail(EMAIL_SENDER, EMAIL_RECIPIENT, msg.as_string())
 	smtp.close()
     
+def drive_notebooks(file_name, drive_file):
+    # get credentials from file and scope configured
+    credentials = service_account.Credentials.from_service_account_file(DRIVE_CREDENTIALS, scopes=DRIVE_SCOPES)
+    
+    # obtain the API Drive service from version
+    service = discovery.build('drive', 'v3', credentials=credentials)
+
+    # Create a folder
+    # https://developers.google.com/drive/v3/web/folder
+#    folder_metadata = {
+#        'name': 'notebooks',
+#        'mimeType': 'application/vnd.google-apps.folder'
+#    }
+#    cloudFolder = service.files().create(body=folder_metadata).execute()
+    
+    # Upload a file in the folder
+    # https://developers.google.com/api-client-library/python/guide/media_upload
+    # https://developers.google.com/drive/v3/reference/files/create
+#    file_metadata = {
+#        'name': subject,
+#        'parents': [cloudFolder['id']]
+#    }
+
+    file_metadata = {
+        'name': file_name
+    }
+         
+    # https://developers.google.com/api-client-library/python/guide/media_upload
+    #media = MediaFileUpload(tf, mimetype='text/plain')
+    media = MediaFileUpload(drive_file)
+    
+    # https://developers.google.com/drive/v3/web/manage-uploads
+    cloudFile = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
+    
+    # Share file with a human user
+    # https://developers.google.com/drive/v3/web/manage-sharing
+    # https://developers.google.com/drive/v3/reference/permissions/create
+    service.permissions().create(fileId=cloudFile['id'], body={'type': 'user', 'role': 'reader', 'emailAddress': DRIVE_EMAIL}).execute()
+        
 if __name__ == '__main__':    
-    # get FOLDERS from yaml file
-    print('Get folders from configuration ...')
+    # load yaml service configurations
     with open("configuration.yml", 'r') as ymlfile:
         cfg = yaml.load(ymlfile)
-    
-    FOLDERS = cfg['folders']
-    
+    print('yaml configuration file loaded correctly')
     print()
-    print('Configuration slack connection ...')
-    
-    # get sclack API Token        
-    parser = argparse.ArgumentParser(description='Notebook Jupyter Tester', epilog='Example of use: python3 notebook_tester.py -t <SLACK_API_TOKEN> -u <USERNAME_SENDER_EMAIL> -p <PASSWORD_SENDER_EMAIL>')    
+            
+    # load command argument configurations
+    parser = argparse.ArgumentParser(description='Notebook Jupyter Tester', epilog='Example of use: python3 notebook_tester.py -t <SLACK_CREDENTIALS> -eu <USERNAME_SENDER_EMAIL> -ep <PASSWORD_SENDER_EMAIL> -dc <DRIVE_CREDENTIALS>')    
     parser.add_argument('-t', '--token', type=str, help='Slack API Token to notifie')
-    parser.add_argument('-u', '--username', type=str, help='Sender username email account')
-    parser.add_argument('-p', '--password', type=str, help='Sender password email account')
-    parser.add_argument('-sh', '--host', type=str, default='smtp.gmail.com', help='SMTP host')
-    parser.add_argument('-sp', '--port', type=str, default=587, help='SMTP port')
+    parser.add_argument('-eu', '--username', type=str, help='Sender username email account')
+    parser.add_argument('-ep', '--password', type=str, help='Sender password email account')
+    parser.add_argument('-dc', '--drive_credentials', default='service_account.json', type=str, help='Drive Credentials file')
 
     args = parser.parse_args()
+
+    # get TRACE to print all app configurations on console
+    TRACE = cfg['trace']    
+    if TRACE == 1:
+        print('Printing all app configurations on console')
+        print()
+        
+    # get Jupyter Notebooks configurations
+    FOLDERS = cfg['folders']
     
-    # slack configuration
-    SLACK_API_TOKEN = args.token
+    if TRACE == 1:
+        print('Jupyter Notebooks configurations')
+        print('--------------------------------')
+        print('FOLDERS: ' + ', '.join(FOLDERS))
+        print()
+        
+    # get slack configurations
+    SLACK_CREDENTIALS = args.token
+
+    if TRACE == 1:
+        print('Slack configurations')
+        print('----------------------------')
+        print('SLACK_API_TOKEN: ' + SLACK_CREDENTIALS)
+        print()
     
-    # email configuration for gmail
-    SMTP_HOST = args.host
-    SMTP_PORT = args.port
+    client = SlackClient(SLACK_CREDENTIALS)
+        
+    # get email SMTP configurations
+    SMTP_HOST = cfg['email'][0]['host']
+    SMTP_PORT = cfg['email'][1]['port']
+    EMAIL_SENDER = cfg['email'][2]['sender']
+    EMAIL_RECIPIENT = cfg['email'][3]['recipient']
     EMAIL_SENDER_USERNAME = args.username
     EMAIL_SENDER_PASSWORD = args.password
-    EMAIL_SENDER = cfg['email'][0]['sender']
-    EMAIL_RECIPIENT = cfg['email'][1]['recipient']
     
-    client = SlackClient(SLACK_API_TOKEN)
-
-    # Trace email configuration values
-    print('SMTP_HOST: ' + SMTP_HOST)
-    print('SMTP_PORT: ' + str(SMTP_PORT))
-    print('EMAIL_SENDER_USERNAME: ' + EMAIL_SENDER_USERNAME)
-    print('EMAIL_SENDER_PASSWORD: ' + EMAIL_SENDER_PASSWORD)
-    print('EMAIL_SENDER: ' + EMAIL_SENDER)    
-    print('EMAIL_RECIPIENT: ' + EMAIL_RECIPIENT)
-        
+    if TRACE == 1:
+        print('Email SMTP configurations')
+        print('----------------------------')
+        print('SMTP_HOST: ' + SMTP_HOST)
+        print('SMTP_PORT: ' + str(SMTP_PORT))
+        print('EMAIL_SENDER_USERNAME: ' + EMAIL_SENDER_USERNAME)
+        print('EMAIL_SENDER_PASSWORD: ' + EMAIL_SENDER_PASSWORD)
+        print('EMAIL_SENDER: ' + EMAIL_SENDER)    
+        print('EMAIL_RECIPIENT: ' + EMAIL_RECIPIENT)
+        print()
+    
+    # get Google Drive configurations
+    DRIVE_SCOPES = ['https://www.googleapis.com/auth/drive']
+    DRIVE_CREDENTIALS = args.drive_credentials
+    DRIVE_EMAIL = cfg['drive'][0]['email']
+    
+    if TRACE == 1:
+        print('Google Drive configurations')
+        print('-----------------------------------')
+        print('DRIVE_SCOPES: ' + ', '.join(DRIVE_SCOPES))
+        print('DRIVE_CREDENTIALS: ' + DRIVE_CREDENTIALS)
+        print('DRIVE_EMAIL: ' + DRIVE_EMAIL)
+        print()
+    
+    # get notification flags
+    EMAIL_NOTIFICATION = cfg['notification'][0]['email']
+    DRIVE_NOTIFICATION = cfg['notification'][1]['drive']
+    
+    if TRACE == 1:
+        print('Notification flags')
+        print('-----------------------------------')
+        print('EMAIL_NOTIFICATION: ' + str(EMAIL_NOTIFICATION))
+        print('DRIVE_NOTIFICATION: ' + str(DRIVE_NOTIFICATION))
+        print()
+    
+    # Start python tester
     print()
     print('STEP01: Testing Jupyter notebooks from these folders: ')
     for i in range(len(FOLDERS)):
@@ -180,7 +266,14 @@ if __name__ == '__main__':
     print('STEP03: Notebooks zipped correctly ...')
     print()
     
-    # STEP04: email with a zip`attached if exist any error
+    # STEP04: send notifications with a zip`attached if exist any error
     if len(errors) > 0:
-        email_notebooks('Testing Atamic at ' + datetime.now().strftime("%Y-%m-%d %H:%M:%S"), zip_name)
-        print('STEP04: Email sent correctly ...')
+        if (EMAIL_NOTIFICATION == 1):
+            email_notebooks('Testing Atamic at ' + datetime.now().strftime("%Y-%m-%d %H:%M:%S"), zip_name)
+            print('STEP04: Email notification sent correctly ...')
+            print()
+        
+        if (DRIVE_NOTIFICATION == 1):
+            drive_notebooks('Testing Atamic at ' + datetime.now().strftime("%Y-%m-%d %H:%M:%S"), zip_name)
+            print('STEP04: Google Drive notification sent correctly ...')
+            print()

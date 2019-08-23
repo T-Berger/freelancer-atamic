@@ -1,5 +1,13 @@
+trace: 1
 folders:
   - ./notebooks
 email:
+  - host: smtp.gmail.com
+  - port: 587
   - sender: masalinas.gancedo@gmail.com
   - recipient: miguel@thingtrack.com
+drive:
+  - email: masalinas.gancedo@gmail.com
+notification:
+  - email: 0
+  - drive: 1

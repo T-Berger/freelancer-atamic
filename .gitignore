@@ -105,3 +105,8 @@ venv.bak/
 
 # Intellij folder
 .idea/
+
+# drive service account credentials
+service_account.json
+notebooks.zip
+

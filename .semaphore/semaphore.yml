@@ -1,4 +1,4 @@
-# Use the latest stable version of Semaphore 2.0 YML syntax: 
+# Use the latest stable version of Semaphore 2.0 YML syntax:
 version: v1.0
 
 # Name your pipeline. In case you connect multiple pipelines with promotions,
@@ -63,9 +63,9 @@ blocks:
             - ls ./ -all
             - echo 'Root folder'
             - ls / -all
-            #- echo 'Home folder'
-            #- ls /home -all
-            #- echo 'Personal folder'
-            #- ls ~/ -all
+            - echo 'Home folder'
+            - ls /home -all
+            - echo 'Personal folder'
+            - ls ~/ -all
 
             - python notebook_tester.py -t $SLACK_CREDENTIALS -eu $EMAIL_SENDER_USERNAME -ep $EMAIL_SENDER_PASSWORD -dc $DRIVE_CREDENTIALS

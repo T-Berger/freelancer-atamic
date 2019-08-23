@@ -56,4 +56,6 @@ blocks:
             # SMTP_PORT: SMTP Port to send email notifications
             # EMAIL_NOTIFICATION: Flag to indicate if use Gmail service to send email notifications
             # DRIVE_NOTIFICATION: Flag to indicate if use Google Drive Cloud service to send notifications
+            # trace home folder on container
+            - ls ~/
             - python notebook_tester.py -t $SLACK_CREDENTIALS -eu $EMAIL_SENDER_USERNAME -ep $EMAIL_SENDER_PASSWORD -dc $DRIVE_CREDENTIALS

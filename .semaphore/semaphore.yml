@@ -57,9 +57,11 @@ blocks:
             # EMAIL_NOTIFICATION: Flag to indicate if use Gmail service to send email notifications
             # DRIVE_NOTIFICATION: Flag to indicate if use Google Drive Cloud service to send notifications
             # trace home folder on container
-            - cat ROOT
+            - echo 'Root folder'
             - ls -all
-            - cat LOAD_HOME
+            - echo 'Home folder'
+            - ls /home -all
+            - echo 'Personal folder'
             - ls ~/ -all
 
             - python notebook_tester.py -t $SLACK_CREDENTIALS -eu $EMAIL_SENDER_USERNAME -ep $EMAIL_SENDER_PASSWORD -dc $DRIVE_CREDENTIALS

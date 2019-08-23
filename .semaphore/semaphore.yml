@@ -66,6 +66,6 @@ blocks:
             - echo 'Home folder'
             - ls ~/ -all
             - echo 'credentials folder'
-            - ls /root/freelancer-atamic/.drive/credentials -all
+            - ls /root/.drive/credentials -all
 
             - python notebook_tester.py -t $SLACK_CREDENTIALS -eu $EMAIL_SENDER_USERNAME -ep $EMAIL_SENDER_PASSWORD -dc $DRIVE_CREDENTIALS

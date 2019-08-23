@@ -56,7 +56,7 @@ blocks:
             # SMTP_PORT: SMTP Port to send email notifications
             # EMAIL_NOTIFICATION: Flag to indicate if use Gmail service to send email notifications
             # DRIVE_NOTIFICATION: Flag to indicate if use Google Drive Cloud service to send notifications
-            # trace home folder on container
+            # trace home folder on container 
             - echo 'Where am I'
             - pwd
             - echo 'Where am I folder'

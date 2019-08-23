@@ -145,7 +145,7 @@ if __name__ == '__main__':
     parser.add_argument('-t', '--token', type=str, help='Slack API Token to notifie')
     parser.add_argument('-eu', '--username', type=str, help='Sender username email account')
     parser.add_argument('-ep', '--password', type=str, help='Sender password email account')
-    parser.add_argument('-dc', '--drive_credentials', default='service_account.json', type=str, help='Drive Credentials file')
+    parser.add_argument('-dc', '--drive_credentials', default='./service_account.json', type=str, help='Drive Credentials file')
 
     args = parser.parse_args()
 

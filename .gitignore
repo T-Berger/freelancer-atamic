@@ -109,4 +109,4 @@ venv.bak/
 # drive service account credentials
 service_account.json
 notebooks.zip
-
+*.odt
